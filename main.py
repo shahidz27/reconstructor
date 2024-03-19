@@ -51,11 +51,20 @@ decoder = keras.Model(encoded_input, decoded_layer(encoded_input))
 autoencoder.compile(optimizer='adam', loss='binary_crossentropy')
 
 # Fit the autoencoder model to the training data
-autoencoder.fit(x_train, x_train,
+history = autoencoder.fit(x_train, x_train,
                 epochs=20,
                 batch_size=64,
                 shuffle=True,
                 validation_data=(x_test, x_test))
+
+# Plot the training and validation loss
+plt.plot(history.history['loss'], label='Training Loss')
+plt.plot(history.history['val_loss'], label='Validation Loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.title('Training and Validation Loss')
+plt.legend()
+plt.show()
 
 # Generate encoded representations of the test images
 encoded_imgs = encoder.predict(x_test)
